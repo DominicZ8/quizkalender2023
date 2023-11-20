@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Bungee+Shade&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="output.css" >
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
+      defer
+    ></script>
+    <!-- <script src="/js/gsapscript_tv.js" defer></script> -->
+    <title>Das rätselhafte Weihnachtsquiz</title>
+    <link rel="icon" type="image/png" href="images/favicon32.png" />
+    <style>
+      @font-face {
+        font-family: "HeyOctober";
+        src: url("fonts/HeyOctober.ttf");
+      }
+
+      body {
+        background-color: #070a33;
+        color: white;
+      }
+
+      h1 h2 h3 p {
+        font-family: "HeyOctober";
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- <p>Frohe Festtage!</p> -->
+    <audio id="musik" loop>
+      <source src="audio/music1.mp3" type="audio/mp3">
+      Dein Browser unterstützt das Audio-Element nicht.
+    </audio>
+    
+    <script>
+      var audio = document.getElementById("musik");
+      audio.play(); // Starte die Musik automatisch
+      // Weitere Steuerungsoptionen können hinzugefügt werden
+    </script>
+
+    <div id="app">
+      <div id="top_menu">
+        <ul id="ul_top_menu"  class="bg-red-500">
+          <li>PLAY/STOP</li>
+          <li>BGMusik ON / OFF</li>
+        </ul>
+      </div>
+      <ul id="tuerchen">
+        <!-- Liste der bisherigen Türchen -->
+        <li
+          v-for="(tuerchen, tuerchen_index) in this.kalenderdaten"
+          :key="tuerchen_index"
+        >
+          <h2 class="tuerchennummer">{{tuerchen_index+1}}. Dezember</h2>
+
+          <!-- Hinweise, Antworten und Story des Türchens -->
+          <ul class="tuerchen_items">
+
+            <!-- Stern-Animation (Spezial) -->
+            <li v-for="(tuerchen_item, tuerchen_item_index) in tuerchen" :key="tuerchen_item_index">
+              
+              <audio controls v-if="tuerchen_item.Medientyp==1">
+                <source :src="'audio/'+tuerchen_item.Mediadatei" type="audio/mpeg">
+                  Your browser does not support the audio element.
+              </audio>
+              
+              <div v-if="tuerchen_index==23&&tuerchen_item_index==0" id="sternanimation">
+                <svg viewbox="0 0 1024 500">
+                  <path
+                  id="svg_3"
+                  d="m280,76l-119,360l313,-228l-389,0l315,227l-120,-359z"
+                  stroke-linecap="null"
+                  stroke-linejoin="null"
+                  stroke-dasharray="null"
+                  stroke-width="5"
+                  stroke="#000000"
+                  fill="none"
+                  />
+                </svg>
+          </div>
+
+              <div class="intro" v-if="tuerchen_item.typ == 1">{{tuerchen_item.Text}}</div>
+            <a @click="show_hinweis(tuerchen_item_index)" class="btn_hinweis cursor-default select-none" v-show="tuerchen_item.typ == 3">Hinweis zeigen</a>
+            <div v-show="hinweis == tuerchen_item_index">
+              <div class="hinweis" v-show="tuerchen_item.typ == 3">{{tuerchen_item.Text}}</div>
+            </div>
+            <a @click="show_loesung(tuerchen_index,tuerchen_item.heute)" class="btn_loesung cursor-default select-none" v-show="tuerchen_item.typ == 4">Lösung anzeigen</a>
+            <div v-show="loesung == tuerchen_index">
+              
+              <div class="loesung" v-show="tuerchen_item.typ == 4">
+                <audio controls v-if="tuerchen_item.Medientyp==2">
+                <source :src="'audio/'+tuerchen_item.Mediadatei" type="audio/mpeg">
+                  Your browser does not support the audio element.
+              </audio>{{tuerchen_item.Text}}</div>
+            </div>
+            <div class="story" v-if="tuerchen_item.typ == 6 &&tuerchen_item.heute == 0">[Vorlesen] {{tuerchen_item.Text}}</div>
+
+            <div class="story_heute" v-if="tuerchen_item.typ == 6 &&tuerchen_item.heute == 1&&story_heute==tuerchen_index">[Vorlesen] {{tuerchen_item.Text}}</div>
+            </li>
+
+            <!-- Navigation zwischen Türchen (autoscroll) -->
+            <li>weiter zurück</li>
+
+          </ul>
+        </li>
+      </ul>
+
+      <!-- <p>Frohe Festtage!</p> -->
+      <!-- <Klopfraetsel></Klopfraetsel> -->
+
+      <!-- <div style="position:relative;">
+        <div style="position:absolute;left:16px;top:20px;font-size:2em;color:lightblue; font-weight:bold;">
+          <p style="font-size:6em;font-weight:bold;color:white;opacity: 0.5;" v-show="this.count>0">{{this.count}}</p>
+          <p v-show="this.quote">&laquo;{{antwort}}&raquo;</p>
+          <p v-show="!this.quote">{{antwort}}</p>
+          <div id="eingabefeld_klopfraetsel" v-show="this.klopf_antwort">
+            <input type="text" v-model="eingabe" @keyup.enter="check_klopfantwort"  />
+            <button @click="check_klopfantwort">OK</button>
+          </div>
+        </div>
+        
+        <div id="klopfraetsel_tuer" style="width:100%;max-width:888px;">
+          
+          <img src="./images/Klopfraetsel_tuer.png" @click="play('klopf',this.count)" v-if="this.tuer_geschlossen">
+          <img src="./images/Klopfraetsel_rahmen.png" v-if="!this.tuer_geschlossen">
+        </div>
+      </div> -->
+    </div>
+
+    <script src="js/kalender.js"></script>
+    <script>
+      var paths = document.querySelectorAll("svg path"),
+        i = 0;
+
+      paths.forEach(function (item, index) {
+        var pathLength = item.getTotalLength();
+        item.setAttribute("stroke-dasharray", pathLength);
+        item.setAttribute("stroke-dashoffset", pathLength);
+
+        item.innerHTML =
+          '<animate attributeName="stroke-dashoffset" begin="0s" dur="3s" to="0" fill="freeze" repeatCount="indefinite"/>';
+        item.setAttribute("stroke", "#ddeeff");
+        console.log(index, pathLength, item.innerHTML);
+      });
+
+      var text = document.querySelectorAll("p"),
+        text =
+          '<animate attributeName="stroke-opacity" begin="0s" dur="3s" to="0" fill="freeze"/>';
+    </script>
+  </body>
+</html>

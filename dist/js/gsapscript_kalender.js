@@ -1,0 +1,5 @@
+gsap.from('#haus', {duration:2,y:'+100vh', opacity:0})
+gsap.from('#anrufe', {duration:2,x:'+50vw',opacity:1, delay:1})
+gsap.from('#aussentemp', {duration:2,x:'-100vw', delay:1})
+gsap.from('#wetter_search_iframe', {duration:2,y:'-100vh', opacity:0, delay:1})
+gsap.from('#boden', {duration:1, opacity:0, delay:2})

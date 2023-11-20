@@ -1,0 +1,26 @@
+1. VueJS-Seite macht axios-Call erhält bisherige Lösungen
+2. Seite wird aufgebaut, Scrollposition springt zum aktuellen Eintrag (Anker/Klasse von Div nach Serverdatum)
+3. Tageseintrag besteht aus Hinweis -> Lösung -> Geschichtsfortsetzung
+4. Spezialtag werden wie importiert?
+
+    API-response wird mit v-for aufgelistet
+    Bei Spezialformatenn (Tür & Stern) wird der Tag hardgecoded: v-if=tuerchen==14 [..] -> wobei bei 14
+
+    Zusatzspalte für die mediadatei mit der Erzählstimme zu jedem Türchen.
+
+API-form:
+    0: Introstory
+    
+    1 - Hinweis
+    1 - Loesung
+    1 - LoesungMedia
+    1 - Story
+
+    2 - Hinweis
+    2 - Loesung
+    2 - Story
+
+Schritte dazu:
+1. Story fertigstellen
+
+

@@ -1,0 +1,77 @@
+body {
+  /* background-color: #e5e5f7; */
+  /* opacity: 0.8;
+  background: radial-gradient(
+      circle,
+      transparent 20%,
+      #e5e5f7 20%,
+      #e5e5f7 80%,
+      transparent 80%,
+      transparent
+    ),
+    radial-gradient(
+        circle,
+        transparent 20%,
+        #e5e5f7 20%,
+        #e5e5f7 80%,
+        transparent 80%,
+        transparent
+      )
+      12.5px 12.5px,
+    linear-gradient(#444cf7 1px, transparent 1px) 0 -0.5px,
+    linear-gradient(90deg, #444cf7 1px, #e5e5f7 1px) -0.5px 0;
+  background-size: 25px 25px, 25px 25px, 12.5px 12.5px, 12.5px 12.5px; */
+}
+
+ul {
+  list-style-type: none;
+}
+
+#top_menu{
+    position: fixed;
+    background-color: #070a33;
+    z-index: 10;
+}
+
+#ul_top_menu {
+  display: flex;
+}
+#ul_top_menu > li {
+  margin-left: 20px;
+}
+
+#klopfraetsel_tuer {
+  background-image: url("../images/Klopfraetsel_rahmen.png");
+  background-repeat: no-repeat;
+}
+
+.hinweis {
+  background-color: yellow;
+  color: black;
+}
+
+.loesung {
+  padding: 10px;
+  background-color: rgb(47, 161, 47);
+}
+
+.btn_hinweis {
+  color: black;
+  border-radius: 5px;
+  background-color: yellow;
+  padding: 2px 4px 2px 4px;
+}
+
+.btn_loesung {
+  color: black;
+  border-radius: 5px;
+  background-color: rgb(47, 161, 47);
+  padding: 2px 4px 2px 4px;
+}
+
+.tuerchennummer {
+  opacity: 0.5;
+  font-size: 3em;
+  font-family: "HeyOctober";
+  text-align: center;
+}

@@ -24,3 +24,4 @@ Schritte dazu:
 1. Story fertigstellen
 
 
+Storyaudios werden jeweils mit dem Storytext als medientyp = 3 hochgeladen, Typ = 6, Mediadatei = audiodateiname.mp3

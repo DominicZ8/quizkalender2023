@@ -50,6 +50,7 @@
     </script>
 
     <div id="app">
+
       <div id="top_menu">
         <ul id="ul_top_menu"  class="bg-red-500">
           <li>PLAY/STOP</li>
@@ -58,9 +59,9 @@
       </div>
       <ul id="tuerchen">
         <!-- Liste der bisherigen Türchen -->
-        <li
+        <li :id="'tuerchen_'+(tuerchen_index+1)"
           v-for="(tuerchen, tuerchen_index) in this.kalenderdaten"
-          :key="tuerchen_index"
+          :key="tuerchen_index" :class="{'heute':tuerchen[0].heute}"
         >
           <h2 class="tuerchennummer">{{tuerchen_index+1}}. Dezember</h2>
 
@@ -104,9 +105,16 @@
                   Your browser does not support the audio element.
               </audio>{{tuerchen_item.Text}}</div>
             </div>
-            <div class="story" v-if="tuerchen_item.typ == 6 &&tuerchen_item.heute == 0">[Vorlesen] {{tuerchen_item.Text}}</div>
+            <div class="story" v-show="tuerchen_item.typ == 6 &&tuerchen_item.heute == 0">
+              <!-- Story-Audio -->
+              <audio :ref="'audioPlayer'+tuerchen_item.id" :src="'audio/'+tuerchen_item.Mediadatei" @loadedmetadata="audioLoaded"></audio>
+              <!-- Ende Story-Audio -->
+              <a @click="togglePlay('audioPlayer'+tuerchen_item.id)" class="bg-yellow-600 text-black rounded py-1 px-2" style="background-color:lightblue;border-radius:5px;color:black;">{{ isPlaying ? 'Pause' : 'Vorlesen' }}</a>
+              {{tuerchen_item.Text}}</div>
 
-            <div class="story_heute" v-if="tuerchen_item.typ == 6 &&tuerchen_item.heute == 1&&story_heute==tuerchen_index">[Vorlesen] {{tuerchen_item.Text}}</div>
+            <div class="story_heute" v-if="tuerchen_item.typ == 6 &&tuerchen_item.heute == 1&&story_heute==tuerchen_index">
+              <a @click="togglePlay('audioPlayer'+tuerchen_item.id)" class="bg-yellow-600 text-black rounded py-1 px-2">{{ isPlaying ? 'Pause' : 'Vorlesen' }}</a>
+              {{tuerchen_item.Text}}</div>
             </li>
 
             <!-- Navigation zwischen Türchen (autoscroll) -->

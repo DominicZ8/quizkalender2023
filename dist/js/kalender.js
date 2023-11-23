@@ -28,6 +28,7 @@ var app = new Vue({
       versuch:0,
       antwort:"Klopfe an die Tür!",
       show_klopf_button:true,
+      isPlaying: false,
       // kalenderdaten:'keine Daten',
       kalenderdaten: [
         [{
@@ -79,8 +80,8 @@ var app = new Vue({
             "Tuerchendatum": "2023-12-01",
             "typ": 6,
             "Text": "Ach ja genau \"\"Manhattan\"\" war's! Zufrieden mit deiner intellektuellen Leistung biegst du um die Ecke  als dein Handy vibriert. Oha eine verpasste Nachricht, doch als du dein Smartphone entsperren willst funktioniert die Gesichtserkennung nicht, wie war doch gleich der PIN? Mist, das ist schon lange her du weisst nur noch es war ein vierstelliger PIN und hat irgendwas mit Tomaten und Sommer zu tun. In deinem Portemonnaie findest du folgenden Hinweis von damals.",
-            "Medientyp": 0,
-            "Mediadatei": null,
+            "Medientyp": 3,
+            "Mediadatei": 'music1.mp3',
             "Status": 1,
             "created_at": "2018-11-20T22:00:00.000000Z",
             "updated_at": "2018-11-20T22:00:00.000000Z",
@@ -122,7 +123,7 @@ var app = new Vue({
             "typ": 6,
             "Text": " Du liest die Nachricht, es ist aus dem Familienchat  \"\"Hast du die Sachen für die Feier von der Post abgeholt?\"\". Oh nein, jetzt fällt's dir wieder ein, du hast gestern den Weihnachtsschinken und Oma's traditionelle Christbaumspitze von der Post abgeholt und das dann wohl in der Bar liegenlassen. Mist, schnell zurück zur Bar! Du kommst dir schon vor wie beider Ostereiersuche als du die Treppe absuchst, hier ein passendes Rätsel während du weitersuchst.",
             "Medientyp": 0,
-            "Mediadatei": null,
+            "Mediadatei": 'music1.mp3',
             "Status": 1,
             "created_at": "2018-11-20T22:00:00.000000Z",
             "updated_at": "2018-11-20T22:00:00.000000Z",
@@ -229,6 +230,21 @@ var app = new Vue({
       //   console.log("Fehler! Konnte keine Kalenderdaten beziehen.")
       
       // });
+
+      // Automatisches herunterscrollen zum aktuellen Datum
+      // Warten Sie auf das DOM-Rendering
+      this.$nextTick(() => {
+        // Wählen Sie das Element mit der Klasse 'heute'
+        const heuteElement = document.querySelector('.heute');
+
+        // Überprüfen Sie, ob das Element gefunden wurde
+        if (heuteElement) {
+          console.log('Element gefunden!')
+          // Scrollen Sie zum gefundenen Element
+          heuteElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+
     },
     computed: {
     },
@@ -331,8 +347,23 @@ var app = new Vue({
           this.story_heute = tuerchen
         }
 
-        // console.log('heute:'+heute)
-        // console.log('story_heute:'+this.story_heute)
+      },
+
+      togglePlay(audio_id) {
+        const audioPlayer = this.$refs[audio_id][0];
+
+        if (this.isPlaying) {
+          audioPlayer.pause();
+        } else {
+          audioPlayer.play();
+        }
+
+        this.isPlaying = !this.isPlaying;
+
+        
+      },
+
+      audioLoaded: function(){
 
       },
 
